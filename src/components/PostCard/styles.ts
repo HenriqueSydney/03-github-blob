@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-export const PostCardContainer = styled.div`
+export const PostCardContainer = styled.a`
   display: flex;
   flex-direction: column;
 
@@ -33,11 +33,12 @@ export const PostCardHeader = styled.div`
   }
 
   time {
+    color: ${(props) => props.theme['base-text']};
     font-size: 0.875rem;
   }
 `
 
-export const PostCardExcerpt = styled.p`
+export const PostCardExcerpt = styled.div`
   margin-top: 1.25rem;
 
   color: ${(props) => props.theme['base-text']};

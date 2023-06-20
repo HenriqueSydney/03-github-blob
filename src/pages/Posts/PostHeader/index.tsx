@@ -1,4 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
 import {
   faArrowUpRightFromSquare,
   faBuilding,
@@ -6,6 +7,10 @@ import {
   faChevronLeft,
   faComment,
 } from '@fortawesome/free-solid-svg-icons'
+
+import { dateDistanceFromNowFormatter } from '../../../utils/formatter'
+
+import { IconsWithDescription } from '../../../components/IconsWithDescription'
 
 import {
   GoBackAndGitHubLink,
@@ -15,12 +20,22 @@ import {
   PostHeaderLinks,
 } from './styles'
 
-import { IconsWithDescription } from '../../../components/IconsWithDescription'
-import { useParams } from 'react-router-dom'
-export function PostHeader() {
-  const { postId } = useParams()
+type PostType = {
+  user: string
+  title: string
+  createdAt: string
+  comments: number
+  html_url: string
+}
 
-  console.log(postId)
+interface PostHeaderProps {
+  postInfo: PostType
+}
+
+export function PostHeader({ postInfo }: PostHeaderProps) {
+  const formattedDate = dateDistanceFromNowFormatter(
+    new Date(postInfo.createdAt),
+  )
 
   return (
     <PostHeaderContainer>
@@ -31,20 +46,26 @@ export function PostHeader() {
             VOLTAR
           </GoBackAndGitHubLink>
 
-          <GoBackAndGitHubLink href="https://github.com/HenriqueSydney?tab=repositories">
+          <GoBackAndGitHubLink href={postInfo.html_url} target="_blank">
             VER NO GITHUB
             <FontAwesomeIcon icon={faArrowUpRightFromSquare} />
           </GoBackAndGitHubLink>
         </PostHeaderLinks>
 
-        <h1>Cameron Williamson</h1>
+        <h1>{postInfo.title}</h1>
       </PostHeaderContent>
 
       <IconsContainer>
-        <IconsWithDescription iconDescription="cameronwll" icon={faBuilding} />
-        <IconsWithDescription iconDescription="Há 1 dia" icon={faCalendarDay} />
         <IconsWithDescription
-          iconDescription="5 comentários"
+          iconDescription={postInfo.user}
+          icon={faBuilding}
+        />
+        <IconsWithDescription
+          iconDescription={formattedDate}
+          icon={faCalendarDay}
+        />
+        <IconsWithDescription
+          iconDescription={`${postInfo.comments} comentários`}
           icon={faComment}
         />
       </IconsContainer>

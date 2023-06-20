@@ -6,6 +6,7 @@ export const IconsWithDescriptionContainer = styled.div`
   gap: 0.5rem;
 
   span {
+    font-size: 0.875rem;
     color: ${(props) => props.theme['base-subtitle']};
   }
 

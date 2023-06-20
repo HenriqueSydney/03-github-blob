@@ -1,20 +1,34 @@
+import { ReactMarkdown } from 'react-markdown/lib/react-markdown'
 import { PostCardContainer, PostCardExcerpt, PostCardHeader } from './styles'
+import { dateDistanceFromNowFormatter } from '../../utils/formatter'
 
-interface PostCardProps {
+interface Post {
+  url: string
+  issueNumber: number
   title: string
-  publishDate: Date
-  postExcerpt: string
+  excerpt: string
+  createdAt: string
 }
 
-export function PostCard({ title, publishDate, postExcerpt }: PostCardProps) {
+interface PostCardProps {
+  issue: Post
+}
+
+export function PostCard({
+  issue: { title, issueNumber, excerpt, createdAt },
+}: PostCardProps) {
+  const formattedDate = dateDistanceFromNowFormatter(new Date(createdAt))
+
   return (
-    <PostCardContainer>
+    <PostCardContainer href={`/post/${issueNumber}`}>
       <PostCardHeader>
         <h1>{title}</h1>
-        <time>{publishDate.toDateString()}</time>
+        <time>{formattedDate}</time>
       </PostCardHeader>
 
-      <PostCardExcerpt>{postExcerpt}</PostCardExcerpt>
+      <PostCardExcerpt>
+        <ReactMarkdown components={{ p: 'div' }}>{excerpt}</ReactMarkdown>
+      </PostCardExcerpt>
     </PostCardContainer>
   )
 }

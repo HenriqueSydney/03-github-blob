@@ -19,47 +19,58 @@ import {
 
 import profileImg from '../../../../assets/foto.jpg'
 
-interface ProfileCardProps {
+type UserProfile = {
+  profileUrl: string
+  avatarUrl: string
   userName: string
+  name: string
   biography: string
-  numberOfFollowers: number
+  followers: number
+  company: string
 }
 
-export function ProfileCard() {
+interface ProfileCardProps {
+  userProfile: UserProfile
+}
+
+export function ProfileCard({ userProfile }: ProfileCardProps) {
+  if (userProfile.userName === undefined) {
+    return (
+      <ProfileCardContainer>
+        <span>Carregando</span>
+      </ProfileCardContainer>
+    )
+  }
+
   return (
     <ProfileCardContainer>
       <ProfileCardContent>
-        <img src={profileImg} alt="Profile Image" />
+        <img src={userProfile.avatarUrl} alt="Profile Image" />
         <ProfileInfo>
           <div>
             <ProfileInfoHeader>
-              <h1>Cameron Williamson</h1>
+              <h1>{userProfile.name}</h1>
 
-              <GitHubLink href="https://github.com/HenriqueSydney?tab=repositories">
+              <GitHubLink href={userProfile.profileUrl}>
                 GITHUB
                 <FontAwesomeIcon icon={faArrowUpRightFromSquare} />
               </GitHubLink>
             </ProfileInfoHeader>
 
-            <Biography>
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-              Distinctio tenetur, dicta omnis, vitae labore eveniet debitis fuga
-              architecto eligendi facilis consectetur tempore, quaerat commodi?
-              Quasi illo perspiciatis veniam harum facere?
-            </Biography>
+            <Biography>{userProfile.biography}</Biography>
           </div>
 
           <IconsContainer>
             <IconsWithDescription
-              iconDescription="cameronwll"
+              iconDescription={userProfile.userName}
               icon={faBuilding}
             />
             <IconsWithDescription
-              iconDescription="Rocketseat"
+              iconDescription={userProfile.company}
               icon={faBuilding}
             />
             <IconsWithDescription
-              iconDescription="32 seguidores"
+              iconDescription={`${userProfile.followers} seguidores`}
               icon={faUserGroup}
             />
           </IconsContainer>
